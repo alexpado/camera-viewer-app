@@ -46,3 +46,4 @@ Not really the most complicated software out there:
 - [ ] Add back the close button (you can use CTRL+W or ALT+F4 in the meantime)
 - [ ] Auto device list refresh (restart or CTRL+R in the meantime)
 - [ ] Keep the volume level when switching audio source
+- [ ] Remember the last audio & video devices used
