@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Camera Viewer App</title>
+
+    <link href="assets/styles/style.css" rel="stylesheet"/>
+</head>
+<body>
+
+<div id="drag-bar"></div>
+
+<div id="app">
+    <div class="media-container" data-tag="container">
+        <div class="loader">
+            <div class="center">
+                <span class="title">Loading</span>
+                <span class="subtitle">Please be patient</span>
+            </div>
+        </div>
+        <video data-tag="media"></video>
+    </div>
+    <div class="media-overlay" data-tag="overlay">
+
+        <div class="cwa-input cwa-volume" data-tag="audio-output">
+            <div class="cwa-volume-feedback" data-tag="volume">
+                <div class="cwa-volume-fill"></div>
+            </div>
+            <div class="cwa-icon">
+                <!-- <editor-fold desc="Speaker Icon"> -->
+                <svg class="feather feather-speaker" fill="none" height="24" stroke="currentColor"
+                     stroke-linecap="round"
+                     stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <rect height="20" rx="2" ry="2" width="16" x="4" y="2"></rect>
+                    <circle cx="12" cy="14" r="4"></circle>
+                    <line x1="12" x2="12.01" y1="6" y2="6"></line>
+                </svg>
+                <!-- </editor-fold> -->
+            </div>
+        </div>
+
+        <div class="cwa-input cwa-audio" data-tag="audio-input">
+            <div class="cwa-icon">
+                <!-- <editor-fold desc="Audio Input Icon"> -->
+                <svg class="feather feather-mic" fill="none" height="24" stroke="currentColor" stroke-linecap="round"
+                     stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                    <line x1="12" x2="12" y1="19" y2="23"></line>
+                    <line x1="8" x2="16" y1="23" y2="23"></line>
+                </svg>
+                <!-- </editor-fold> -->
+            </div>
+            <div class="cwa-devices" data-tag="audio-devices">
+                <!-- List of available devices -->
+            </div>
+        </div>
+
+        <div class="cwa-input cwa-video" data-tag="video-input">
+            <div class="cwa-icon">
+                <!-- <editor-fold desc="Video Input Icon"> -->
+                <svg class="feather feather-video" fill="none" height="24" stroke="currentColor" stroke-linecap="round"
+                     stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                    <rect height="14" rx="2" ry="2" width="15" x="1" y="5"></rect>
+                </svg>
+                <!-- </editor-fold> -->
+            </div>
+            <div class="cwa-devices" data-tag="video-devices">
+                <!-- List of available devices -->
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<script src="assets/app/Application.js" type="module"></script>
+</body>
+</html>
