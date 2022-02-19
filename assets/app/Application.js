@@ -207,6 +207,10 @@ class Application {
         }
     });
 
+    video.addEventListener('dblclick', () => {
+        toggleFullScreen();
+    })
+
     await app.openAudioStream();
     await app.openVideoStream();
 
@@ -217,3 +221,14 @@ class Application {
 
     window.cwa = app;
 })();
+
+
+function toggleFullScreen() {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().then();
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen().then();
+        }
+    }
+}

@@ -41,7 +41,7 @@ Not really the most complicated software out there:
 ## TODO
 
 - [x] Change volume within the app
-- [ ] Toggle fullscreen with double click
+- [x] Toggle fullscreen with double click
 - [ ] Video settings (resolution & framerate)
 - [ ] Add back the close button (you can use CTRL+W or ALT+F4 in the meantime)
 - [ ] Auto device list refresh (restart or CTRL+R in the meantime)
