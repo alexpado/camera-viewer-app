@@ -194,6 +194,30 @@ class Application {
     await app.loadDevices();
     app.refreshUI();
 
+
+    let mouseTimer = -1;
+
+    document.addEventListener('mousemove', () => {
+        doMouseTimeout();
+    })
+
+    function doMouseTimeout() {
+        if (document.body.classList.contains('idle')) {
+            document.body.classList.remove('idle');
+        }
+
+        if (mouseTimer > -1) {
+            clearTimeout(mouseTimer);
+            mouseTimer = -1;
+        }
+
+        mouseTimer = setTimeout(() => {
+            document.body.classList.add('idle');
+        }, 2000);
+    }
+
+    doMouseTimeout();
+
     // Register "external" listeners
     const video = document.querySelector('[data-tag="container"]');
     const overlay = document.querySelector('[data-tag="overlay"]');
@@ -208,6 +232,7 @@ class Application {
     });
 
     video.addEventListener('dblclick', () => {
+        doMouseTimeout();
         toggleFullScreen();
     })
 
@@ -215,6 +240,7 @@ class Application {
     await app.openVideoStream();
 
     volume.addEventListener('wheel', (ev) => {
+        doMouseTimeout();
         const delta = ev.deltaY / -20;
         app.volume = app.volume + delta;
     })
