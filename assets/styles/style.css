@@ -95,6 +95,12 @@ body:not(.active) * {
     text-align: center;
 }
 
+.center img {
+    width: 250px;
+    height: 250px;
+    margin: 0 auto 1em auto;
+}
+
 .title {
     font-size: 2em;
     text-transform: uppercase;
@@ -163,7 +169,7 @@ body.active .media-overlay {
     height: var(--size);
 }
 
-.cwa-icon svg {
+.cwa-icon svg, .cwa-icon img {
     margin: auto;
 }
 
