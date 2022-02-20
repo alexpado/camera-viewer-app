@@ -1,12 +1,12 @@
 import Device from './Device.js';
 
-class Application {
+export default class Application {
 
     constructor() {
 
         this.videoOptions = {
-            width: 1280,
-            height: 720,
+            width: 1920,
+            height: 1080,
             frameRate: 60,
             latency: 0.02
         }
@@ -51,10 +51,9 @@ class Application {
             this.audioContext.gainControl.gain.value = value / 100;
             this.audioContext.volume = value;
         }
-        this.refreshVolume();
     }
 
-    async loadDevices() {
+    async detectAvailableDevices() {
 
         const devices = await navigator.mediaDevices.enumerateDevices();
 
@@ -156,105 +155,17 @@ class Application {
             const source = this.audioContext.context.createMediaStreamSource(stream);
             source.connect(this.audioContext.gainControl);
             this.audioContext.gainControl.connect(this.audioContext.context.destination);
-            this.volume = 100;
-            this.refreshVolume();
+            this.volume = 0;
         }
     }
 
-    refreshUI() {
-
-        const audioDevices = document.querySelector('[data-tag="audio-devices"]');
-        const videoDevices = document.querySelector('[data-tag="video-devices"]');
-
-        audioDevices.innerHTML = '';
-        videoDevices.innerHTML = '';
-
-        this.availableAudioDevices.forEach(device => {
-            audioDevices.appendChild(device.html);
-        });
-
-        this.availableVideoDevices.forEach(device => {
-            videoDevices.appendChild(device.html);
-        });
-
-        this.refreshVolume();
-    }
-
-    refreshVolume() {
-        if (this.audioContext.gainControl) {
-            const volume = document.querySelector('[data-tag="volume"]');
-            volume.style.height = this.volume + '%';
-        }
-    }
-}
-
-
-(async () => {
-    const app = new Application();
-    await app.loadDevices();
-    app.refreshUI();
-
-
-    let mouseTimer = -1;
-
-    document.addEventListener('mousemove', () => {
-        doMouseTimeout();
-    })
-
-    function doMouseTimeout() {
-        if (document.body.classList.contains('idle')) {
-            document.body.classList.remove('idle');
-        }
-
-        if (mouseTimer > -1) {
-            clearTimeout(mouseTimer);
-            mouseTimer = -1;
-        }
-
-        mouseTimer = setTimeout(() => {
-            document.body.classList.add('idle');
-        }, 2000);
-    }
-
-    doMouseTimeout();
-
-    // Register "external" listeners
-    const video = document.querySelector('[data-tag="container"]');
-    const overlay = document.querySelector('[data-tag="overlay"]');
-    const volume = document.querySelector('[data-tag="audio-output"]');
-
-    video.addEventListener('contextmenu', () => {
-        if (overlay.classList.contains('visible')) {
-            overlay.classList.remove('visible');
-        } else {
-            overlay.classList.add('visible');
-        }
-    });
-
-    video.addEventListener('dblclick', () => {
-        doMouseTimeout();
-        toggleFullScreen();
-    })
-
-    await app.openAudioStream();
-    await app.openVideoStream();
-
-    volume.addEventListener('wheel', (ev) => {
-        doMouseTimeout();
-        const delta = ev.deltaY / -20;
-        app.volume = app.volume + delta;
-    })
-
-    window.cwa = app;
-})();
-
-
-function toggleFullScreen() {
-    if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().then();
-    } else {
-        if (document.exitFullscreen) {
-            document.exitFullscreen().then();
-        }
+    /**
+     * @param event
+     * @param {UI} ui
+     */
+    onWheelScrolling(event, ui) {
+        const delta = event.deltaY / -20;
+        this.volume = this.volume + delta;
+        ui.setVolume(this.volume);
     }
 }

@@ -40,5 +40,4 @@ export default class Device {
     get html() {
         return this.item;
     }
-
 }

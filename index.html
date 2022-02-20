@@ -8,18 +8,30 @@
 </head>
 <body>
 
-<div id="drag-bar"></div>
-
 <div id="app">
-    <div class="media-container" data-tag="container">
-        <div class="loader">
-            <div class="center">
-                <span class="title">Loading</span>
-                <span class="subtitle">Please be patient</span>
+    <div class="main-container">
+        <div class="title-bar">
+            <div class="draggable"></div>
+            <div class="close-button" data-tag="close">
+                <svg class="feather feather-x" fill="none" height="24" stroke="currentColor" stroke-linecap="round"
+                     stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <line x1="18" x2="6" y1="6" y2="18"></line>
+                    <line x1="6" x2="18" y1="6" y2="18"></line>
+                </svg>
             </div>
         </div>
-        <video data-tag="media"></video>
+        <div class="media-container" data-tag="container">
+            <div class="loader">
+                <div class="center">
+                    <span class="title">Loading</span>
+                    <span class="subtitle">Please be patient</span>
+                </div>
+            </div>
+            <video data-tag="media"></video>
+        </div>
     </div>
+
     <div class="media-overlay" data-tag="overlay">
 
         <div class="cwa-input cwa-volume" data-tag="audio-output">
@@ -77,7 +89,6 @@
     </div>
 </div>
 
-
-<script src="assets/app/Application.js" type="module"></script>
+<script src="assets/script.js" type="module"></script>
 </body>
 </html>
