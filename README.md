@@ -1,27 +1,48 @@
 # camera-viewer-app
 
-I've made this application just for the sole purpose of displaying my Nintendo Switch screen on my computer using an
-HDMI to USB adapter which behave like a camera, which allows me to screen share it on Discord with sounds.
+*Please note that this is a personal project. Its aim is not to be publicly used, but still, I will offer minimum
+support if you encounter a bug (might as well accept feature request only if I'm not lazy too)*
 
-As I'm playing few rhythm game, I needed to have a very low audio latency, which I was unable to find in other software.
+## Why ?
 
-This can be used with any video / audio devices as long as your computer can detect them as such.
+I wanted to play games on my Switch and also screen share it on Discord to my friends. So I bought a HDMI to USB adapter
+which would "emulate" a camera with microphone from the HDMI input stream (because capture cards are freaking expensive)
+.
 
-________
-> I don't really plan to add a lot of feature or keep it frequently updated as it's a fairly simple app.
-________
+I found multiple software allowing to stream the video/audio stream, but none of them had video and audio synchronized
+or had decent latency to not obliterate the game experience.
 
-### TODO
+So what was my last option ? DIY !
 
-- [ ] Add volume control
-- [ ] Double click to toggle fullscreen
-- [ ] Video stream options (resolution, framerate, ...)
+## Support
 
-### Project Setup (NodeJS + NPM)
+This software can support any video/audio stream as long as they are detected as input device by the OS. Although I
+don't know how this would be useful streaming your camera with your microphone, but that works too.
 
-```
-git clone https://github.com/alexpado/camera-viewer-app.git
-cd camera-viewer-app
-npm install
-npm run electron:serve
-```
+## Bug, Feature request
+
+As stated above, I won't offer full support and active development on this project. As long as it works for me, I won't
+update it.
+
+If you ever encounter a bug, open an issue, I might look into it when I don't have better things to do.
+
+If you have a feature request, do not hesitate to also open an issue, but keep in mind that I can straight up refuse
+working on it due to my laziness (or wait for an undefined amount of time).
+
+## How to use
+
+Not really the most complicated software out there:
+
+- Right click to lock/unlock the UI
+- F11/Double click to enable fullscreen
+- Scroll on the volume bar to change volume
+
+## TODO
+
+- [x] Change volume within the app
+- [x] Toggle fullscreen with double click
+- [ ] Video settings (resolution & framerate)
+- [x] Add back the close button (you can use CTRL+W or ALT+F4 in the meantime)
+- [ ] Auto device list refresh (restart or CTRL+R in the meantime)
+- [x] Keep the volume level when switching audio source
+- [x] Remember the last audio & video devices used
