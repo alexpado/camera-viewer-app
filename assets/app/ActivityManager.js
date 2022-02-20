@@ -17,6 +17,8 @@ export default class ActivityManager {
         element.addEventListener(event, (ev) => {
             this.signalActivity();
             callback(ev);
+        }, {
+            passive: true
         })
     }
 

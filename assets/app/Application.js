@@ -29,7 +29,7 @@ export default class Application {
         this.audioContext = {
             context: null,
             gainControl: null,
-            volume: 100
+            volume: parseInt(localStorage.getItem('volume') ?? 100)
         }
 
         this.videoElement = document.querySelector('[data-tag="media"]')
@@ -50,6 +50,7 @@ export default class Application {
         if (this.audioContext.gainControl) {
             this.audioContext.gainControl.gain.value = value / 100;
             this.audioContext.volume = value;
+            localStorage.setItem('volume', value);
         }
     }
 
@@ -70,12 +71,39 @@ export default class Application {
         this.availableAudioDevices = audioDevices;
         this.availableVideoDevices = videoDevices;
 
-        if (this.activeAudioDevice == null) {
-            this.activeAudioDevice = this.availableAudioDevices[0].id;
+        const lastAudioDevice = localStorage.getItem('lastAudioDevice');
+        const lastVideoDevice = localStorage.getItem('lastVideoDevice');
+
+        // Check if our device is still here
+        const audioDeviceStillPresent = audioDevices.filter(device => device.id === this.activeAudioDevice).length === 1;
+        const videoDeviceStillPresent = videoDevices.filter(device => device.id === this.activeVideoDevice).length === 1;
+
+        const lastAudioDeviceAvailable = audioDevices.filter(device => device.id === lastAudioDevice).length === 1;
+        const lastVideoDeviceAvailable = videoDevices.filter(device => device.id === lastVideoDevice).length === 1;
+
+
+        if (!audioDeviceStillPresent) {
+            if (lastAudioDeviceAvailable) {
+                console.log(`Application: Using last known audio device (ID: ${lastAudioDevice})`);
+                this.activeAudioDevice = lastAudioDevice;
+            } else if (audioDevices.length > 0) {
+                console.log(`Application: Using default audio device (ID: ${audioDevices[0].id})`);
+                this.activeAudioDevice = audioDevices[0].id;
+            } else {
+                alert('No audio device available.');
+            }
         }
 
-        if (this.activeVideoDevice == null) {
-            this.activeVideoDevice = this.availableVideoDevices[0].id;
+        if (!videoDeviceStillPresent) {
+            if (lastVideoDeviceAvailable) {
+                console.log(`Application: Using last known video device (ID: ${lastVideoDevice})`);
+                this.activeVideoDevice = lastVideoDevice;
+            } else if (videoDevices.length > 0) {
+                console.log(`Application: Using default video device (ID: ${videoDevices[0].id})`);
+                this.activeVideoDevice = videoDevices[0].id;
+            } else {
+                alert('No video device available.');
+            }
         }
 
         this.refreshDeviceStatus();
@@ -94,12 +122,14 @@ export default class Application {
 
     async switchAudioSource(deviceId) {
         this.activeAudioDevice = deviceId;
+        localStorage.setItem('lastAudioDevice', deviceId);
         this.refreshDeviceStatus();
         await this.openAudioStream()
     }
 
     async switchVideoSource(deviceId) {
         this.activeVideoDevice = deviceId;
+        localStorage.setItem('lastVideoDevice', deviceId);
         this.refreshDeviceStatus();
         await this.openVideoStream();
     }
@@ -155,7 +185,7 @@ export default class Application {
             const source = this.audioContext.context.createMediaStreamSource(stream);
             source.connect(this.audioContext.gainControl);
             this.audioContext.gainControl.connect(this.audioContext.context.destination);
-            this.volume = 0;
+            this.volume = parseInt(localStorage.getItem('volume') ?? 100);
         }
     }
 

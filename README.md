@@ -42,7 +42,7 @@ Not really the most complicated software out there:
 - [x] Change volume within the app
 - [x] Toggle fullscreen with double click
 - [ ] Video settings (resolution & framerate)
-- [ ] Add back the close button (you can use CTRL+W or ALT+F4 in the meantime)
+- [x] Add back the close button (you can use CTRL+W or ALT+F4 in the meantime)
 - [ ] Auto device list refresh (restart or CTRL+R in the meantime)
-- [ ] Keep the volume level when switching audio source
-- [ ] Remember the last audio & video devices used
+- [x] Keep the volume level when switching audio source
+- [x] Remember the last audio & video devices used
