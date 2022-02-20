@@ -41,8 +41,17 @@ Not really the most complicated software out there:
 
 - [x] Change volume within the app
 - [x] Toggle fullscreen with double click
-- [ ] Video settings (resolution & framerate)
+- [x] Video settings (resolution & framerate)
 - [x] Add back the close button (you can use CTRL+W or ALT+F4 in the meantime)
 - [ ] Auto device list refresh (restart or CTRL+R in the meantime)
 - [x] Keep the volume level when switching audio source
 - [x] Remember the last audio & video devices used
+
+## Using this for you Nintendo Switch ?
+
+Although I think it depends on the adapter used, I had a better rendering quality by setting my switch's resolution to
+720p (don't ask me why). At 1080p, everything was a bit blurry.
+
+**To change the switch's resolution:** System Settings > TV Output > TV Resolution
+
+

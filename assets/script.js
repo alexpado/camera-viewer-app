@@ -15,6 +15,7 @@ import ActivityManager from './app/ActivityManager.js';
 
     ui.applyAudioDevices(application.availableAudioDevices);
     ui.applyVideoDevices(application.availableVideoDevices);
+    ui.applyVideoOptions(application.availableVideoOptions);
     ui.setVolume(application.volume)
 
     ui.closeButton.addEventListener('click', () => {

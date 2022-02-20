@@ -7,10 +7,9 @@ export default class UI {
         this.overlay = this.getTag('overlay');
         this.volumeController = this.getTag('audio-output');
         this.volumeFeedback = this.getTag('volume');
-        this.audioInput = this.getTag('audio-input');
         this.audioDevices = this.getTag('audio-devices');
-        this.videoInput = this.getTag('video-input');
         this.videoDevices = this.getTag('video-devices');
+        this.videoOptions = this.getTag('video-options')
         this.closeButton = this.getTag('close');
     }
 
@@ -26,7 +25,7 @@ export default class UI {
      * @param {Element} element
      * @param {Device[]} devices
      */
-    applyDevices(element, devices) {
+    applyItems(element, devices) {
 
         element.innerHTML = '';
         devices.forEach(device => {
@@ -39,14 +38,21 @@ export default class UI {
      */
     applyAudioDevices(devices) {
 
-        this.applyDevices(this.audioDevices, devices);
+        this.applyItems(this.audioDevices, devices);
     }
 
     /**
      * @param {Device[]} devices
      */
     applyVideoDevices(devices) {
-        this.applyDevices(this.videoDevices, devices);
+        this.applyItems(this.videoDevices, devices);
+    }
+
+    /**
+     * @param {Resolution[]} options
+     */
+    applyVideoOptions(options) {
+        this.applyItems(this.videoOptions, options);
     }
 
     fullscreen() {

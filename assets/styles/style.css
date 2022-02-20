@@ -200,7 +200,7 @@ body.active .media-overlay {
     background-color: white;
 }
 
-.cwa-devices {
+.cwa-list {
     position: absolute;
     left: 100%;
     bottom: 0;
@@ -210,15 +210,15 @@ body.active .media-overlay {
     display: none;
 }
 
-.cwa-input:hover, .cwa-device {
+.cwa-input:hover, .cwa-item {
     background-color: rgba(0, 0, 0, 0.8);
 }
 
-.cwa-input:hover .cwa-devices {
+.cwa-input:hover .cwa-list {
     display: block;
 }
 
-.cwa-device {
+.cwa-item {
     color: #aaa;
     border-radius: var(--size);
     height: var(--size);
@@ -234,12 +234,12 @@ body.active .media-overlay {
     box-sizing: border-box;
 }
 
-.cwa-device.active {
+.cwa-item.active {
     color: white;
     background-color: black;
 }
 
-.cwa-device:hover {
+.cwa-item:hover {
     color: white;
 }
 

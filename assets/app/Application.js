@@ -1,15 +1,9 @@
 import Device from './Device.js';
+import Resolution from "./Resolution.js";
 
 export default class Application {
 
     constructor() {
-
-        this.videoOptions = {
-            width: 1920,
-            height: 1080,
-            frameRate: 60,
-            latency: 0.02
-        }
 
         this.audioOptions = {
             noiseSuppression: false,
@@ -19,9 +13,11 @@ export default class Application {
 
         this.activeAudioDevice = null;
         this.activeVideoDevice = null;
+        this.activeVideoOption = null;
 
         this.availableAudioDevices = [];
         this.availableVideoDevices = [];
+        this.availableVideoOptions = [];
 
         this.videoStream = null;
         this.audioStream = null;
@@ -68,18 +64,29 @@ export default class Application {
             .filter(device => device.deviceId.length === 64)
             .map(device => new Device(this, device));
 
+        const videoOptions = [
+            new Resolution(this, 1920, 1080, 60),
+            new Resolution(this, 1920, 1080, 30),
+            new Resolution(this, 1280, 720, 60),
+            new Resolution(this, 1280, 720, 30)
+        ]
+
         this.availableAudioDevices = audioDevices;
         this.availableVideoDevices = videoDevices;
+        this.availableVideoOptions = videoOptions;
 
         const lastAudioDevice = localStorage.getItem('lastAudioDevice');
         const lastVideoDevice = localStorage.getItem('lastVideoDevice');
+        const lastVideoOption = localStorage.getItem('lastVideoOption');
 
         // Check if our device is still here
         const audioDeviceStillPresent = audioDevices.filter(device => device.id === this.activeAudioDevice).length === 1;
         const videoDeviceStillPresent = videoDevices.filter(device => device.id === this.activeVideoDevice).length === 1;
+        const videoOptionStillPresent = videoOptions.filter(option => option.id === this.activeVideoOption).length === 1;
 
         const lastAudioDeviceAvailable = audioDevices.filter(device => device.id === lastAudioDevice).length === 1;
         const lastVideoDeviceAvailable = videoDevices.filter(device => device.id === lastVideoDevice).length === 1;
+        const lastVideoOptionAvailable = videoOptions.filter(option => option.id === lastVideoOption).length === 1;
 
 
         if (!audioDeviceStillPresent) {
@@ -106,6 +113,18 @@ export default class Application {
             }
         }
 
+        if (!videoOptionStillPresent) {
+            if (lastVideoOptionAvailable) {
+                console.log(`Application: Using last known video option (ID: ${lastVideoOption})`);
+                this.activeVideoOption = lastVideoOption;
+            } else if (videoOptions.length > 0) {
+                console.log(`Application: Using default video option (ID: ${videoOptions[0].id})`);
+                this.activeVideoOption = videoOptions[0].id;
+            } else {
+                alert('No video option available.');
+            }
+        }
+
         this.refreshDeviceStatus();
     }
 
@@ -117,6 +136,10 @@ export default class Application {
 
         this.availableAudioDevices.forEach(device => {
             device.enabled = device.id === this.activeAudioDevice;
+        });
+
+        this.availableVideoOptions.forEach(res => {
+            res.enabled = res.id === this.activeVideoOption
         });
     }
 
@@ -131,6 +154,13 @@ export default class Application {
         this.activeVideoDevice = deviceId;
         localStorage.setItem('lastVideoDevice', deviceId);
         this.refreshDeviceStatus();
+        await this.openVideoStream();
+    }
+
+    async switchVideoResolution(resolution) {
+        this.activeVideoOption = resolution;
+        localStorage.setItem('lastVideoOption', resolution);
+        this.refreshDeviceStatus()
         await this.openVideoStream();
     }
 
@@ -156,10 +186,15 @@ export default class Application {
         this.stopVideoStream();
 
         if (this.activeVideoDevice) {
+            const videoOption = this.availableVideoOptions.filter(option => option.id === this.activeVideoOption)[0];
+
             const stream = await navigator.mediaDevices.getUserMedia({
                 video: {
                     deviceId: this.activeVideoDevice,
-                    ...this.videoOptions
+                    latency: 0.02,
+                    width: videoOption.width,
+                    height: videoOption.height,
+                    frameRate: videoOption.fps
                 }
             });
 

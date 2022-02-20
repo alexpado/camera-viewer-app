@@ -13,7 +13,7 @@ export default class Device {
 
         // Construct HTML Entity
         this.item = document.createElement('div');
-        this.item.classList.add('cwa-device');
+        this.item.classList.add('cwa-item');
         this.item.innerText = this.name;
 
         this.item.addEventListener('click', () => {
