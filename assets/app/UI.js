@@ -11,6 +11,7 @@ export default class UI {
         this.videoDevices = this.getTag('video-devices');
         this.videoOptions = this.getTag('video-options')
         this.closeButton = this.getTag('close');
+        this.notifications = this.getTag('notifications')
     }
 
     /**

@@ -1,5 +1,5 @@
-import Device from './Device.js';
-import Resolution from "./Resolution.js";
+import Device from './items/Device.js';
+import Resolution from "./items/Resolution.js";
 
 export default class Application {
 
@@ -232,5 +232,20 @@ export default class Application {
         const delta = event.deltaY / -20;
         this.volume = this.volume + delta;
         ui.setVolume(this.volume);
+    }
+
+    /**
+     * @param {UI} ui
+     */
+    createScreenshot(ui) {
+        const videoOption = this.availableVideoOptions.filter(option => option.id === this.activeVideoOption)[0];
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+
+        canvas.width = videoOption.width;
+        canvas.height = videoOption.height;
+
+        context.drawImage(ui.videoPlayer, 0, 0, videoOption.width, videoOption.height);
+        return canvas.toDataURL('image/png').replace(/^data:image\/png;base64,/, "");
     }
 }

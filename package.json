@@ -1,6 +1,6 @@
 {
   "name": "camera-viewer-app",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Stream HDMI (video + sound) with low latency, allowing screensharing with sound your HDMI input !",
   "main": "boot.js",
   "scripts": {

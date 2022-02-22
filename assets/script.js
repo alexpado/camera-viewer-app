@@ -1,6 +1,8 @@
 import Application from './app/Application.js';
 import UI from './app/UI.js';
 import ActivityManager from './app/ActivityManager.js';
+import Notification from "./app/items/Notification.js";
+
 
 (async () => {
     const application = new Application();
@@ -20,12 +22,28 @@ import ActivityManager from './app/ActivityManager.js';
 
     ui.closeButton.addEventListener('click', () => {
         window.close();
-    })
+    });
+
+    document.body.addEventListener('keydown', (event) => {
+        if (event.key === 'F12') {
+            const data = application.createScreenshot(ui);
+            const date = new Date();
+
+            const dateStr = date.toLocaleDateString().replaceAll('/', '-');
+            const timeStr = date.toLocaleTimeString().replaceAll(':', '-');
+
+            const filename = `screenshot-${dateStr}-${timeStr}.png`;
+
+            cwa.send('save-screenshot', [filename, data]);
+            const screenshot = new Notification('Screenshot saved', cwa.screenPath(filename));
+            screenshot.show(ui.notifications, 6000);
+        }
+    }, {passive: true})
 
     await application.openAudioStream();
     await application.openVideoStream();
 
-    window.application = application;
-    window.ui = ui;
-    window.activityManager = activityManager;
+    window.cwa.application = application;
+    window.cwa.ui = ui;
+    window.cwa.activityManager = activityManager;
 })();
