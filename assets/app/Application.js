@@ -73,6 +73,11 @@ export default class Application {
             });
         }
         this.audioStream = null;
+
+        if (this.audioContext.context) {
+            this.audioContext.context.close();
+            this.audioContext.context = null;
+        }
     }
 
     stopVideoStream() {
