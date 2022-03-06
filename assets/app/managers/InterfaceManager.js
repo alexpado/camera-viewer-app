@@ -38,6 +38,7 @@ export default class InterfaceManager {
      * @param {number} value
      */
     set volume(value) {
+        // noinspection JSUnresolvedVariable • Heh ? Idea u good ? This is an HTML Element...
         Components.VolumeFeedback.style.height = `${this.application.volume}%`;
     }
 

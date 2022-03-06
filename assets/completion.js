@@ -1,6 +1,7 @@
 // DO NOT IMPORT THIS FILE
 // AUTO-COMPLETE ONLY
 // See preload.js for implementation
+// noinspection JSUnusedLocalSymbols
 
 window.cwa = {
     /**

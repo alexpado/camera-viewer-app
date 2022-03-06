@@ -14,10 +14,7 @@ export default class Option extends DropdownItem {
         this.id = id;
     }
 
-    get enabled() {
-        this._component.classList.contains('active');
-    }
-
+    // noinspection JSUnusedGlobalSymbols • WTF Idea ? Used in DeviceManager#updateStates()
     set enabled(value) {
         if (value) {
             this._component.classList.add('active');

@@ -8,11 +8,6 @@ export default class AudioDevice extends Option {
      */
     constructor(deviceManager, device) {
         super(deviceManager, device.deviceId, device.label);
-        this._device = device;
-    }
-
-    get device() {
-        return this._device;
     }
 
     onClick() {

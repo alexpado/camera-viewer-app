@@ -2,10 +2,7 @@ export default class Notification {
 
     constructor(title, subtitle) {
 
-        this._title = title;
-        this._subtitle = subtitle;
         this._component = html({title, subtitle});
-
     }
 
     get component() {

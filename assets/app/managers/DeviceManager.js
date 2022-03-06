@@ -2,6 +2,7 @@ import AudioDevice from '../components/AudioDevice.js';
 import VideoDevice from '../components/VideoDevice.js';
 import VideoResolution from '../components/VideoResolution.js';
 
+// noinspection SpellCheckingInspection
 const DeviceType = {
     AUDIO: 'audioinput',
     VIDEO: 'videoinput'
@@ -13,18 +14,18 @@ export default class DeviceManager {
 
         this.application = application;
 
-        this.containers = {
-            audioDevices: document.querySelector(tag('audio-devices')),
-            videoDevices: document.querySelector(tag('video-devices')),
-            videoOptions: document.querySelector(tag('video-options'))
-        }
-
+        /**
+         * @type {{videoDevices: VideoDevice[], videoOptions: VideoResolution[], audioDevices: AudioDevice[]}}
+         */
         this.available = {
             audioDevices: [],
             videoDevices: [],
             videoOptions: []
         }
 
+        /**
+         * @type {{audioDevice: string, videoDevice: string, videoOption: string}}
+         */
         this.activeID = {
             audioDevice: localStorage.getItem('lastAudioDevice'),
             videoDevice: localStorage.getItem('lastVideoDevice'),
@@ -177,5 +178,3 @@ export default class DeviceManager {
         this.available.videoOptions.forEach(option => option.enabled = option.id === this.activeID.videoOption);
     }
 }
-
-const tag = (value) => `[data-tag="${value}"]`;
