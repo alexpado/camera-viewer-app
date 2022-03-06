@@ -5,15 +5,34 @@
 
 window.cwa = {
     /**
+     * @param {string} data The base64 screenshot data
+     */
+    saveScreenshot: (data) => {
+    },
+    /**
+     * @param {ArrayBuffer} data
+     */
+    saveRecording: (data) => {
+    },
+    /**
      * @param {string} action
      * @param {array} params
      */
     send: (action, params) => {
     },
     /**
-     * @param {string} filename
-     * @return {string}
+     * @param {FilenameHandler} func
      */
-    screenPath: (filename) => {
+    onScreenshotSaved: (func) => {
+    },
+    /**
+     * @param {FilenameHandler} func
+     */
+    onRecordingSaved: (func) => {
     }
 }
+
+/**
+ * @callback FilenameHandler
+ * @param {string} filename
+ */

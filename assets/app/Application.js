@@ -123,6 +123,7 @@ export default class Application {
             }
         });
 
+        this.audioStream = stream;
         this.audioContext.context = new AudioContext();
         this.audioContext.gainControl = this.audioContext.context.createGain();
         const source = this.audioContext.context.createMediaStreamSource(stream);
