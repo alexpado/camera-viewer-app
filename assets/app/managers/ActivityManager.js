@@ -3,16 +3,16 @@ export default class ActivityManager {
     constructor(activityTimeout) {
 
         this.activityTimeout = activityTimeout;
-        this.timeoutId = -1
+        this.timeoutId = -1;
 
-        document.addEventListener('mousemove', () => this.signalActivity());
+        document.addEventListener('mousemove', () => this.signalActivity(), {passive: true});
     }
 
     get isActive() {
         return document.body.classList.contains('active');
     }
 
-    activityHook(element, event, callback) {
+    addHook(element, event, callback) {
 
         element.addEventListener(event, (ev) => {
             this.signalActivity();

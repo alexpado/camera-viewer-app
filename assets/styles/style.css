@@ -275,6 +275,7 @@ body.active .media-overlay {
     transform: translateX(100%);
 }
 
+/*noinspection CssUnusedSymbol*/
 .notification.show {
     transform: translateX(0);
 }
