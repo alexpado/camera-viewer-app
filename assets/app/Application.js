@@ -1,6 +1,7 @@
 import DeviceManager from './managers/DeviceManager.js';
 import ActivityManager from './managers/ActivityManager.js';
 import InterfaceManager from './managers/InterfaceManager.js';
+import UI from './UI.js'
 
 export default class Application {
 
@@ -25,7 +26,6 @@ export default class Application {
             volume: parseInt(localStorage.getItem('volume') ?? 100)
         }
 
-        this.videoElement = document.querySelector('[data-tag="media"]');
     }
 
     /**
@@ -106,8 +106,8 @@ export default class Application {
         });
 
         this.videoStream = stream;
-        this.videoElement.srcObject = stream;
-        this.videoElement.autoplay = true;
+        UI.VideoPlayer.srcObject = stream;
+        UI.VideoPlayer.autoplay = true;
     }
 
     /**
