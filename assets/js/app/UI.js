@@ -15,6 +15,10 @@ export default {
     AudioDevicesContainer: findTaggedElement('audio-devices'),
     VideoDevicesContainer: findTaggedElement('video-devices'),
     VideoOptionsContainer: findTaggedElement('video-options'),
+    GameContainer: findTaggedElement('games'),
+    GameSettingList: findTaggedElement('game-setting-list'),
+    NewGameForm: findTaggedElement('form-add-game'),
+    SettingsButton: findTaggedElement('settings'),
     CloseButton: findTaggedElement('close'),
     NotificationContainer: findTaggedElement('notifications')
 };

@@ -1,0 +1,103 @@
+* {
+    margin:               0;
+    max-height:           100vh;
+    max-width:            100vw;
+    box-sizing:           border-box;
+
+    --title-bar-height:   28px;
+    --close-button-width: 46px;
+}
+
+html, body, #app {
+    height:   100vh;
+    width:    100vw;
+    overflow: hidden;
+}
+
+body {
+    background-color: #232323;
+    color:            #EEEEEE;
+    font-family:      'Segoe UI', Ubuntu, sans-serif;
+}
+
+.main-container {
+    position: absolute;
+
+    top:      0;
+    left:     0;
+    right:    0;
+    bottom:   0;
+}
+
+.title-bar {
+    position:         absolute;
+    top:              0;
+    left:             0;
+    right:            0;
+    height:           var(--title-bar-height);
+    background-color: #232323;
+    display:          flex;
+}
+
+.draggable {
+    width:              calc(100% - var(--close-button-width));
+    height:             100%;
+    -webkit-app-region: drag;
+}
+
+.close-button {
+    width:      var(--close-button-width);
+    height:     100%;
+    display:    flex;
+
+    transition: background-color 0.1s ease-in-out;
+}
+
+.close-button:hover {
+    background-color: #E81123;
+}
+
+.close-button svg {
+    margin:    auto;
+    transform: scale(0.8);
+}
+
+.center {
+    margin:         auto;
+    display:        flex;
+    flex-direction: column;
+    text-align:     center;
+}
+
+.center img {
+    width:  250px;
+    height: 250px;
+    margin: 0 auto 1em auto;
+}
+
+.title {
+    font-size:      2em;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+}
+
+.subtitle {
+    font-size:      1.1em;
+    text-transform: uppercase;
+    letter-spacing: 6px;
+}
+
+.fullscreen .title-bar {
+    display: none;
+}
+
+.media-container {
+    --transition-duration: 500ms;
+
+    transition:            top ease-in-out var(--transition-duration),
+                           left ease-in-out var(--transition-duration),
+                           right ease-in-out var(--transition-duration),
+                           bottom ease-in-out var(--transition-duration),
+                           width ease-in-out var(--transition-duration),
+                           height ease-in-out var(--transition-duration);
+}

@@ -1,0 +1,29 @@
+[data-mode="view"] body:not(.active) * {
+    cursor: none;
+}
+
+[data-mode="view"] .media-container {
+    position: absolute;
+    top: var(--title-bar-height);
+    left: 0;
+    background-color: black;
+
+    width: 100%;
+    height: calc(100% - var(--title-bar-height));
+}
+
+[data-mode="view"] body.active .media-overlay {
+    left: 20px;
+    opacity: 1;
+}
+
+[data-mode="view"] .fullscreen .media-container {
+    top: 0;
+    height: 100%;
+}
+
+[data-mode="view"] .loader {
+    opacity: 1;
+
+    transition: opacity ease-in-out 0s 1s;
+}

@@ -21,6 +21,11 @@ window.cwa = {
     send: (action, params) => {
     },
     /**
+     * @param {{details: string, largeImageKey: string, instance: number}} data
+     */
+    sendGameActivity: (data) => {
+    },
+    /**
      * @param {FilenameHandler} func
      */
     onScreenshotSaved: (func) => {
@@ -29,10 +34,27 @@ window.cwa = {
      * @param {FilenameHandler} func
      */
     onRecordingSaved: (func) => {
-    }
-}
+    },
+    /**
+     * @param {GameHandler} func
+     */
+    onGameActivity: (func) => {
+    },
+    /**
+     * @param {string} action
+     * @param {any} params
+     */
+    on: (action, params) => {
+    },
+};
 
 /**
  * @callback FilenameHandler
  * @param {string} filename
  */
+
+/**
+ * @callback GameHandler
+ * @param {{details: string, largeImageKey: string, instance: number}} data
+ */
+

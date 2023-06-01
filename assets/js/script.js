@@ -1,4 +1,4 @@
-import prototypes from './prototypes.js';
+import prototypes  from './prototypes.js';
 import Application from './app/Application.js';
 
 prototypes();

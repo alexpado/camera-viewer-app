@@ -1,113 +1,56 @@
-const {app, BrowserWindow, ipcMain} = require('electron')
-const path = require("path");
-const fs = require('fs');
-require('electron-reload')(__dirname)
+require('electron-reload')(__dirname);
 
-const CWA = {
-    AppDir: {
-        SCREENSHOTS: 'screenshots',
-        RECORDINGS: 'recordings'
-    },
-    Size: {
-        RATIO: 16 / 9,
-        HEIGHT: 720,
-        TITLE_BAR: 28
-    }
+const {ipcMain, app} = require('electron');
+const Store     = require('electron-store');
+const Window    = require('./lib/Window');
+const Discord   = require('./lib/Discord');
+const Disk      = require('./lib/Disk');
+
+const store = new Store();
+
+if (!store.has('discord.clientId') || store.get('discord.clientId', null) == null) {
+    store.set('discord.enabled', false);
+    store.set('discord.clientId', null)
 }
 
-// <editor-fold desc="Electron Specific">
+console.log(' === Welcome to CWA !');
+console.log("Application Folder: ", app.getPath('userData'));
+console.log(" ===");
+console.log();
 
-const createWindow = () => {
-    const win = new BrowserWindow({
-        width: Math.floor(CWA.Size.HEIGHT * CWA.Size.RATIO),
-        height: CWA.Size.HEIGHT + CWA.Size.TITLE_BAR,
-        frame: false,
-        webPreferences: {
-            nodeIntegration: false,
-            contextIsolation: true,
-            worldSafeExecuteJavaScript: true,
-            preload: path.join(__dirname, 'preload.js')
-        }
-    });
 
-    win.loadFile('index.html').then();
-}
+(async () => {
+    console.log(' > Starting app...');
+    await Window.start();
 
-app.whenReady().then(() => {
-    createWindow()
-
-    app.on('activate', () => {
-        if (BrowserWindow.getAllWindows().length === 0) createWindow()
-    })
-})
-
-app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') app.quit()
-});
-
-// </editor-fold>
-
-// <editor-fold desc="App Specific">
-
-const createFilename = (type, ext) => {
-    const date = new Date();
-
-    const dateStr = date.toLocaleDateString().replaceAll('/', '-');
-    const timeStr = date.toLocaleTimeString().replaceAll(':', '-');
-
-    return `${type}-${dateStr}-${timeStr}.${ext}`;
-}
-
-const getApplicationDirectory = (dir) => {
-    const homedir = require('os').homedir();
-    return path.join(homedir, 'cwa', dir);
-}
-
-ipcMain.on('save:screenshot', (event, data) => {
-
-    const directory = getApplicationDirectory(CWA.AppDir.SCREENSHOTS);
-    const filename = createFilename('screenshot', 'png');
-
-    console.log(`[SCREENSHOT] Saving new screenshot into ${directory}...`)
-
-    if (!fs.existsSync(directory)) {
-        console.log('[SCREENSHOT] Creating directory...')
-        fs.mkdirSync(directory, {recursive: true})
+    if (store.get('discord.enabled', true) && store.get('discord.clientId')) {
+        console.log(' > Login in to Discord...');
+        await Discord.login(store.get('discord.clientId'));
     }
 
-    const file = path.join(directory, filename);
-    console.log('[SCREENSHOT] Saving ' + file);
+    console.log(' > Registering IPC Events...');
 
-    fs.writeFile(file, data, 'base64', function (err) {
-        if (err) {
-            console.error('An error occurred when saving screenshot:', err);
-            event.sender.send('failed:screenshot')
-        }
-        event.sender.send('saved:screenshot', file);
+    ipcMain.on('save:screenshot', (event, data) => {
+        console.log('[IPC] save:screenshot');
+        Disk.saveScreenshot(data)
+            .then((r) => event.sender.send('saved:screenshot', r))
+            .catch(() => event.sender.send('failed:screenshot'));
     });
-});
 
-ipcMain.on('save:recording', (event, data) => {
-
-    const directory = getApplicationDirectory(CWA.AppDir.RECORDINGS);
-    const filename = createFilename('recording', 'webm');
-
-    console.log(`[RECORDING] Saving new recording into ${directory}...`)
-
-    if (!fs.existsSync(directory)) {
-        console.log('[RECORDING] Creating directory...')
-        fs.mkdirSync(directory, {recursive: true})
-    }
-    const file = path.join(directory, filename);
-    console.log('[RECORDING] Saving ' + file);
-
-    const buffer = Buffer.from(data);
-    fs.writeFile(file, buffer, function (err) {
-        if (err) {
-            console.error('An error occurred when saving recording:', err);
-            event.sender.send('failed:recording')
-        }
-        event.sender.send('saved:recording', file);
+    ipcMain.on('save:recording', (event, data) => {
+        console.log('[IPC] save:recording');
+        Disk.saveRecording(data)
+            .then((r) => event.sender.send('saved:recording', r))
+            .catch(() => event.sender.send('failed:recording'));
     });
-})
-// </editor-fold>
+
+    ipcMain.on('activity:change', (event, data) => {
+        console.log('[IPC] activity:change');
+        Discord.setActivity(data).then(() => event.sender.send('activity:changed', data));
+    });
+
+    console.log(' > Opening window...');
+    await Window.createWindow();
+    console.log('The application is now ready.');
+    console.log();
+})();

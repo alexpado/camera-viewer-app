@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-mode="view">
 <head>
     <meta charset="UTF-8">
     <title>Camera Viewer App</title>
 
-    <link href="assets/styles/style.css" rel="stylesheet"/>
+    <link href="./assets/styles/app.css" rel="stylesheet"/>
 </head>
 <body>
 
@@ -21,16 +21,43 @@
                 </svg>
             </div>
         </div>
+        <div class="settings-container" data-tag="settings-container">
+            <h1>Settings</h1>
+
+            <section id="game-settings">
+
+                <form data-tag="form-add-game">
+                    <label>
+                        <span>Game*</span>
+                        <input required type="text" name="game-name"/>
+                    </label>
+                    <label>
+                        <span>Key</span>
+                        <input type="text" name="game-key"/>
+                    </label>
+
+                    <input type="submit" value="+">
+                </form>
+
+                <p>You can configure your list of game here:</p>
+                <p>
+                    <small>If you edit time tracking option (T button), you'll need to re-send the discord activity to refresh</small>
+                </p>
+                <div class="list-view" data-tag="game-setting-list">
+                </div>
+            </section>
+        </div>
         <div class="media-container" data-tag="container">
             <div class="loader">
                 <div class="center">
-                    <img alt="logo" src="assets/icon.png">
+                    <img alt="logo" src="./assets/icon.png">
                     <span class="title">Loading</span>
                     <span class="subtitle">Please be patient</span>
                 </div>
             </div>
             <video data-tag="media"></video>
         </div>
+
     </div>
 
     <div class="media-overlay" data-tag="overlay">
@@ -98,13 +125,33 @@
             </div>
         </div>
 
+        <div class="cwa-input cwa-games" data-tag="game">
+            <div class="cwa-icon">
+                <!-- <editor-fold desc="Tag Icon"> -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+                <!-- </editor-fold> -->
+            </div>
+            <div class="cwa-list" data-tag="games">
+                <!-- List of available devices -->
+            </div>
+        </div>
 
+        <div class="cwa-input cwa-settings" data-tag="settings">
+            <div class="cwa-icon">
+                <!-- <editor-fold desc="Settings Icon"> -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-settings"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                <!-- </editor-fold> -->
+            </div>
+            <div class="cwa-list" data-tag="games">
+                <!-- List of available devices -->
+            </div>
+        </div>
     </div>
 
     <div class="notification-container" data-tag="notifications">
     </div>
 </div>
 
-<script src="assets/script.js" type="module"></script>
+<script src="./assets/js/script.js" type="module"></script>
 </body>
 </html>

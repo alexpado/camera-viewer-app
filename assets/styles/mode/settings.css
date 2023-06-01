@@ -1,0 +1,32 @@
+[data-mode='settings'] .loader {
+    opacity:    0;
+
+    transition: opacity ease-in-out 0s;
+}
+
+[data-mode='settings'] .media-container {
+    --width:          213px;
+    --height:         120px;
+    --padding:        16px;
+
+    position:         absolute;
+
+    top:              calc(100vh - calc(var(--height) + var(--padding)));
+    left:             calc(100vw - calc(var(--width) + var(--padding)));
+
+    background-color: black;
+
+    width:            var(--width);
+    height:           var(--height);
+}
+
+[data-mode='settings'] .settings-container {
+    position: absolute;
+    top:      var(--title-bar-height);
+    left:     0;
+    padding:  1em;
+
+    width:    100%;
+    height:   calc(100% - var(--title-bar-height));
+}
+

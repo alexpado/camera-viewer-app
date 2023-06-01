@@ -1,0 +1,21 @@
+/**
+    Main CSS file.
+
+    -| Why all of this ?
+
+    It has been split in multiple file to keep it more organized as CSS files tends to be big VERY fast, and using SCSS
+    just for file separation seems a bit overkill.
+
+    As CSS file support both variable & includes, let's just use it.
+
+    -| Isn't that slower ?
+
+    If it was a regular webpage, yes it would be. In an Electron App context however, every files are loaded locally,
+    thus reducing delay and network download time, which make loading multiple file just a tiny little bit slower,
+    but nowhere enough to impact negatively the user experience.
+ */
+@import url('./includes/global.css');
+@import url('./includes/ui.css');
+
+@import url('./mode/settings.css');
+@import url('./mode/view.css');

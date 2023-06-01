@@ -1,4 +1,4 @@
-import Components from '../UI.js';
+import Components   from '../UI.js';
 import Notification from '../components/Notification.js';
 
 export default class InterfaceManager {
@@ -8,7 +8,7 @@ export default class InterfaceManager {
      */
     constructor(application) {
         this.application = application;
-        this.recorder = null;
+        this.recorder    = null;
         this.videoChunks = [];
     }
 
@@ -37,11 +37,19 @@ export default class InterfaceManager {
     }
 
     /**
+     * @param {Game[]} games
+     */
+    set games(games) {
+        Components.GameContainer.innerHTML = '';
+        games.forEach(game => Components.GameContainer.appendChild(game.dropdownElement.component));
+    }
+
+    /**
      * @param {number} value
      */
     set volume(value) {
         // noinspection JSUnresolvedVariable • Heh ? Idea u good ? This is an HTML Element...
-        Components.VolumeFeedback.style.height = `${this.application.volume}%`;
+        Components.VolumeFeedback.style.height = `${value}%`;
     }
 
     init() {
@@ -57,10 +65,18 @@ export default class InterfaceManager {
 
     registerListeners() {
 
+        Components.VideoContainer.addEventListener('click', () => {
+            document.documentElement.dataset.mode = 'view';
+        });
+
+        Components.SettingsButton.addEventListener('click', () => {
+            document.documentElement.dataset.mode = 'settings';
+        })
+
         Components.CloseButton.addEventListener('click', () => window.close());
         document.body.addEventListener('keydown', (ev) => {
             if (ev.key === 'F12') {
-                this.takeScreenshot(ev).then()
+                this.takeScreenshot(ev).then();
             } else if (ev.key === 'F10') {
                 if (this.isRecording()) {
                     this.stopRecording().then();
@@ -70,17 +86,31 @@ export default class InterfaceManager {
             }
         }, {passive: true});
 
-        cwa.onScreenshotSaved(filename => {
+        cwa.onScreenshotSaved(({filename}) => {
             const screenshot = new Notification('Screenshot saved', filename);
             screenshot.show(Components.NotificationContainer, 6000).then();
         });
 
-        cwa.onRecordingSaved(filename => {
+        cwa.onRecordingSaved(({filename})  => {
             const screenshot = new Notification('Recording saved', filename);
             screenshot.show(Components.NotificationContainer, 6000).then();
 
-            this.recorder = null;
+            this.recorder    = null;
             this.videoChunks = [];
+        });
+
+        cwa.onGameActivity(game => {
+            const notification = new Notification('Activity updated !', game.details);
+            notification.show(Components.NotificationContainer, 6000).then();
+        });
+
+        cwa.on('notify', ({
+                              title,
+                              message,
+                          }) => {
+            new Notification(title, message)
+                .show(Components.NotificationContainer, 6000)
+                .then();
         });
     }
 
@@ -88,8 +118,12 @@ export default class InterfaceManager {
      * @param {WheelEvent} event
      */
     onWheelScrolling(event) {
+        // Arbitrary value to not change volume at mach 1 speed
         const delta = event.deltaY / -20;
-        this.application.volume = this.application.volume + delta;
+
+        // Clamping value between 0 & 100 \o/
+        this.application.volume = Math.max(0, Math.min(100, this.application.volume + delta));
+
         this.volume = this.application.volume;
     }
 
@@ -105,39 +139,36 @@ export default class InterfaceManager {
         }
     }
 
-    /**
-     * @param {KeyboardEvent} event
-     */
-    async takeScreenshot(event) {
+    async takeScreenshot() {
         const data = this.createScreenshot();
         cwa.saveScreenshot(data);
     }
 
     createScreenshot() {
         const videoOption = this.application.deviceManager.activeVideoOption;
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
+        const canvas      = document.createElement('canvas');
+        const context     = canvas.getContext('2d');
 
-        canvas.width = videoOption.width;
+        canvas.width  = videoOption.width;
         canvas.height = videoOption.height;
 
         context.drawImage(Components.VideoPlayer, 0, 0, videoOption.width, videoOption.height);
-        return canvas.toDataURL('image/png').replace(/^data:image\/png;base64,/, "");
+        return canvas.toDataURL('image/png').replace(/^data:image\/png;base64,/, '');
     }
 
     async startRecording() {
         const audioTrack = this.application.audioStream.getTracks()[0];
         const videoTrack = this.application.videoStream.getTracks()[0];
-        const stream = new MediaStream([audioTrack, videoTrack]);
-        this.recorder = new MediaRecorder(stream, {mimeType: 'video/webm'});
+        const stream     = new MediaStream([audioTrack, videoTrack]);
+        this.recorder    = new MediaRecorder(stream, {mimeType: 'video/webm'});
 
         this.recorder.ondataavailable = (e) => {
             this.videoChunks.push(e.data);
-        }
+        };
 
         this.recorder.onstop = () => {
             this.saveRecording().then();
-        }
+        };
 
         this.recorder.start();
         const screenshot = new Notification('Started recording...', 'Press F10 again to stop.');
@@ -152,7 +183,7 @@ export default class InterfaceManager {
 
     async saveRecording() {
         const blob = new Blob(this.videoChunks, {type: 'video/webm'});
-        const data = await blob.arrayBuffer()
+        const data = await blob.arrayBuffer();
         cwa.saveRecording(data);
     }
 

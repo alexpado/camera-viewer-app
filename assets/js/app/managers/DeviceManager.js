@@ -1,5 +1,5 @@
-import AudioDevice from '../components/AudioDevice.js';
-import VideoDevice from '../components/VideoDevice.js';
+import AudioDevice     from '../components/AudioDevice.js';
+import VideoDevice     from '../components/VideoDevice.js';
 import VideoResolution from '../components/VideoResolution.js';
 
 // noinspection SpellCheckingInspection

@@ -1,30 +1,32 @@
-import DeviceManager from './managers/DeviceManager.js';
-import ActivityManager from './managers/ActivityManager.js';
+import DeviceManager    from './managers/DeviceManager.js';
+import ActivityManager  from './managers/ActivityManager.js';
 import InterfaceManager from './managers/InterfaceManager.js';
-import UI from './UI.js'
+import UI               from './UI.js';
+import GameManager      from './managers/GameManager.js';
 
 export default class Application {
 
     constructor() {
 
-        this.deviceManager = new DeviceManager(this);
+        this.deviceManager    = new DeviceManager(this);
         this.interfaceManager = new InterfaceManager(this);
-        this.activity = new ActivityManager(3000);
+        this.gameManager      = new GameManager(this);
+        this.activity         = new ActivityManager(3000);
 
         this.audioOptions = {
             noiseSuppression: false,
             echoCancellation: false,
-            autoGainControl: false
-        }
+            autoGainControl:  false,
+        };
 
         this.videoStream = null;
         this.audioStream = null;
 
         this.audioContext = {
-            context: null,
+            context:     null,
             gainControl: null,
-            volume: parseInt(localStorage.getItem('volume') ?? 100)
-        }
+            volume:      parseInt(localStorage.getItem('volume') ?? 100),
+        };
 
     }
 
@@ -41,11 +43,11 @@ export default class Application {
     set volume(value) {
 
         const clampedVolume = Math.max(0, Math.min(100, value));
-        const volumeStr = `${clampedVolume}`
+        const volumeStr     = `${clampedVolume}`;
 
         if (this.audioContext.gainControl) {
             this.audioContext.gainControl.gain.value = value / 100;
-            this.audioContext.volume = value;
+            this.audioContext.volume                 = value;
             localStorage.setItem('volume', volumeStr);
         }
     }
@@ -64,6 +66,7 @@ export default class Application {
         this.interfaceManager.videoDevices = this.deviceManager.available.videoDevices;
         this.interfaceManager.audioDevices = this.deviceManager.available.audioDevices;
         this.interfaceManager.videoOptions = this.deviceManager.available.videoOptions;
+        this.interfaceManager.games        = this.gameManager.games;
     }
 
     stopAudioStream() {
@@ -97,17 +100,17 @@ export default class Application {
 
         const stream = await navigator.mediaDevices.getUserMedia({
             video: {
-                deviceId: this.deviceManager.activeVideoDevice.id,
-                latency: 0.02,
-                width: this.deviceManager.activeVideoOption.width,
-                height: this.deviceManager.activeVideoOption.height,
-                frameRate: this.deviceManager.activeVideoOption.fps
-            }
+                deviceId:  this.deviceManager.activeVideoDevice.id,
+                latency:   0.02,
+                width:     this.deviceManager.activeVideoOption.width,
+                height:    this.deviceManager.activeVideoOption.height,
+                frameRate: this.deviceManager.activeVideoOption.fps,
+            },
         });
 
-        this.videoStream = stream;
+        this.videoStream         = stream;
         UI.VideoPlayer.srcObject = stream;
-        UI.VideoPlayer.autoplay = true;
+        UI.VideoPlayer.autoplay  = true;
     }
 
     /**
@@ -119,14 +122,14 @@ export default class Application {
         const stream = await navigator.mediaDevices.getUserMedia({
             audio: {
                 deviceId: this.deviceManager.activeAudioDevice.id,
-                ...this.audioOptions
-            }
+                ...this.audioOptions,
+            },
         });
 
-        this.audioStream = stream;
-        this.audioContext.context = new AudioContext();
+        this.audioStream              = stream;
+        this.audioContext.context     = new AudioContext();
         this.audioContext.gainControl = this.audioContext.context.createGain();
-        const source = this.audioContext.context.createMediaStreamSource(stream);
+        const source                  = this.audioContext.context.createMediaStreamSource(stream);
         source.connect(this.audioContext.gainControl);
         this.audioContext.gainControl.connect(this.audioContext.context.destination);
         this.volume = parseInt(localStorage.getItem('volume') ?? 100);
