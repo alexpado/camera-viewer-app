@@ -5,9 +5,9 @@ support if you encounter a bug (might as well accept feature request only if I'm
 
 ## Why ?
 
-I wanted to play games on my Switch and also screen share it on Discord to my friends. So I bought a HDMI to USB adapter
-which would "emulate" a camera with microphone from the HDMI input stream (because capture cards are freaking expensive)
-.
+I wanted to play games on my Switch and also screen share it on Discord to my friends. So I bought an HDMI to USB
+adapter which would "emulate" a camera with microphone from the HDMI input stream (because capture cards are freaking
+expensive).
 
 I found multiple software allowing to stream the video/audio stream, but none of them had video and audio synchronized
 or had decent latency to not obliterate the game experience.
@@ -36,6 +36,8 @@ Not really the most complicated software out there:
 - Right click to lock/unlock the UI
 - F11/Double click to enable fullscreen
 - Scroll on the volume bar to change volume
+- Press F12 to take a screenshot
+- Press F10 to start/stop video recording
 
 ## TODO
 
@@ -46,6 +48,7 @@ Not really the most complicated software out there:
 - [ ] Auto device list refresh (restart or CTRL+R in the meantime)
 - [x] Keep the volume level when switching audio source
 - [x] Remember the last audio & video devices used
+- [ ] Stream video data to file when recording (see [issue #4](https://github.com/alexpado/camera-viewer-app/issues/4))
 
 ## Using this for you Nintendo Switch ?
 
@@ -54,4 +57,7 @@ Although I think it depends on the adapter used, I had a better rendering qualit
 
 **To change the switch's resolution:** System Settings > TV Output > TV Resolution
 
+For reference, here's what the adapter I'm using looks like and I paid it around 7€:
+
+![HDMI to USB Adapter](repository/hdmi-usb.jpg)
 
