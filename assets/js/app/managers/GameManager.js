@@ -92,7 +92,7 @@ export default class GameManager {
             Components.GameSettingList.appendChild(game.settingElement);
         });
 
-        this.application.interfaceManager.games = this.configurableGames;
+        this.application.interfaceManager.games = this.games;
 
     }
 
@@ -106,6 +106,7 @@ export default class GameManager {
         const id   = Date.now();
         const game = new Game(id, name, key, false);
         this.configurableGames.push(game);
+        this.games.push(game);
         this._save();
         this.doSettingRendering();
     }
