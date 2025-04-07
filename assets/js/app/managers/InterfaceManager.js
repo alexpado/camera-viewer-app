@@ -1,4 +1,4 @@
-import Components   from '../UI.js';
+import Components from '../UI.js';
 import Notification from '../components/Notification.js';
 
 export default class InterfaceManager {
@@ -52,6 +52,14 @@ export default class InterfaceManager {
         Components.VolumeFeedback.style.height = `${value}%`;
     }
 
+    /**
+     * @param {number} value
+     */
+    set brightness(value) {
+        Components.BrightnessDisplay.style.opacity = `${100 - value}%`
+        Components.BrightnessFeedback.style.height = `${value}%`;
+    }
+
     init() {
         this.registerHooks();
         this.registerListeners();
@@ -59,8 +67,9 @@ export default class InterfaceManager {
 
     registerHooks() {
         this.application.activity.addHook(Components.VideoContainer, 'dblclick', () => this.fullscreen());
-        this.application.activity.addHook(Components.VideoContainer, 'wheel', (ev) => this.onWheelScrolling(ev));
-        this.application.activity.addHook(Components.VolumeController, 'wheel', (ev) => this.onWheelScrolling(ev));
+        this.application.activity.addHook(Components.VideoContainer, 'wheel', (ev) => this.onVolumeWheel(ev));
+        this.application.activity.addHook(Components.VolumeController, 'wheel', (ev) => this.onVolumeWheel(ev));
+        this.application.activity.addHook(Components.BrightnessController, 'wheel', (ev) => this.onBrightnessWheel(ev));
     }
 
     registerListeners() {
@@ -91,7 +100,7 @@ export default class InterfaceManager {
             screenshot.show(Components.NotificationContainer, 6000).then();
         });
 
-        cwa.onRecordingSaved(({filename})  => {
+        cwa.onRecordingSaved(({filename}) => {
             const screenshot = new Notification('Recording saved', filename);
             screenshot.show(Components.NotificationContainer, 6000).then();
 
@@ -117,7 +126,7 @@ export default class InterfaceManager {
     /**
      * @param {WheelEvent} event
      */
-    onWheelScrolling(event) {
+    onVolumeWheel(event) {
         // Arbitrary value to not change volume at mach 1 speed
         const delta = event.deltaY / -20;
 
@@ -125,6 +134,19 @@ export default class InterfaceManager {
         this.application.volume = Math.max(0, Math.min(100, this.application.volume + delta));
 
         this.volume = this.application.volume;
+    }
+
+    /**
+     * @param {WheelEvent} event
+     */
+    onBrightnessWheel(event) {
+        // Arbitrary value to not change volume at mach 1 speed
+        const delta = event.deltaY / -20;
+        console.log(this.application.brightness)
+        // Clamping value between 0 & 100 \o/
+        this.application.brightness = Math.max(0, Math.min(100, this.application.brightness + delta));
+        this.brightness = this.application.brightness;
+
     }
 
     fullscreen() {

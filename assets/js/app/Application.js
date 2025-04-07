@@ -1,8 +1,8 @@
-import DeviceManager    from './managers/DeviceManager.js';
-import ActivityManager  from './managers/ActivityManager.js';
+import DeviceManager from './managers/DeviceManager.js';
+import ActivityManager from './managers/ActivityManager.js';
 import InterfaceManager from './managers/InterfaceManager.js';
-import UI               from './UI.js';
-import GameManager      from './managers/GameManager.js';
+import UI from './UI.js';
+import GameManager from './managers/GameManager.js';
 
 export default class Application {
 
@@ -28,6 +28,12 @@ export default class Application {
             volume:      parseInt(localStorage.getItem('volume') ?? 100),
         };
 
+        this.videoContext = {
+            brightness: parseInt(localStorage.getItem('brightness') ?? 100),
+        }
+
+        this.interfaceManager.volume     = this.audioContext.volume;
+        this.interfaceManager.brightness = this.videoContext.brightness;
     }
 
     /**
@@ -42,14 +48,28 @@ export default class Application {
      */
     set volume(value) {
 
-        const clampedVolume = Math.max(0, Math.min(100, value));
-        const volumeStr     = `${clampedVolume}`;
+        const clamped   = Math.max(0, Math.min(100, value));
+        const volumeStr = `${clamped}`;
 
         if (this.audioContext.gainControl) {
-            this.audioContext.gainControl.gain.value = value / 100;
-            this.audioContext.volume                 = value;
+            this.audioContext.gainControl.gain.value = clamped / 100;
+            this.audioContext.volume                 = clamped;
             localStorage.setItem('volume', volumeStr);
         }
+    }
+
+    /**
+     * @returns {number}
+     */
+    get brightness() {
+        return this.videoContext.brightness;
+    }
+
+    /**
+     * @param {number} value
+     */
+    set brightness(value) {
+        this.videoContext.brightness = Math.max(0, Math.min(100, value));
     }
 
     /**

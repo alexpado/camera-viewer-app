@@ -1,4 +1,4 @@
-.media-container .loader {
+.media-container .loader, .media-container .brightness-controller {
     position: absolute;
     top:      0;
     left:     0;
@@ -6,6 +6,11 @@
     bottom:   0;
     z-index:  0;
     display:  flex;
+}
+
+.media-container .brightness-controller {
+    z-index: 2;
+    background-color: black;
 }
 
 .media-container video {
@@ -63,13 +68,13 @@
     margin: auto;
 }
 
-.cwa-volume {
+.cwa-filler {
     justify-content: flex-end;
-    height:          200px;
+    height:          100px;
     overflow:        hidden;
 }
 
-.cwa-volume-feedback {
+.cwa-feedback {
     --margin:      0px;
 
     position:      absolute;
@@ -80,7 +85,7 @@
     border-radius: var(--size);
 }
 
-.cwa-volume-fill {
+.cwa-fill {
     position:         absolute;
     top:              0;
     left:             0;
